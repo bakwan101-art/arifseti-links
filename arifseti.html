@@ -34,7 +34,6 @@
     font-weight: 700;
     color: #fff;
     margin-bottom: 12px;
-    letter-spacing: -1px;
   }
   .profile h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .profile p { font-size: 13px; color: #888; }
@@ -52,7 +51,6 @@
     background: #1a1a1a;
     border-radius: 16px;
     overflow: hidden;
-    margin-bottom: 16px;
     border: 1px solid #2a2a2a;
   }
   .platform-header {
@@ -76,141 +74,89 @@
   .tokopedia-icon { background: #03a84e; }
   .platform-name { font-size: 15px; font-weight: 600; }
   .platform-sub { font-size: 12px; color: #666; margin-top: 1px; }
-  .categories {
-    padding: 10px 12px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .categories { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
   .cat-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 12px;
+    padding: 11px 13px;
     background: #222;
     border-radius: 10px;
     text-decoration: none;
     color: #ddd;
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 1.4;
     transition: background 0.15s;
     border: 1px solid #2e2e2e;
   }
   .cat-link:hover { background: #2c2c2c; color: #fff; }
-  .cat-link .cat-label { display: flex; align-items: center; gap: 8px; }
-  .cat-link .cat-emoji { font-size: 16px; }
-  .cat-link .arrow { color: #444; font-size: 12px; }
-  .cat-link.main-link {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    color: #ccc;
-    font-weight: 500;
-  }
-  .empty-cat {
-    font-size: 13px;
-    color: #444;
-    padding: 8px 12px;
-    font-style: italic;
-  }
-  .footer {
-    font-size: 11px;
-    color: #333;
-    margin-top: 12px;
-  }
+  .cat-label { display: flex; align-items: flex-start; gap: 9px; flex: 1; }
+  .cat-emoji { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .cat-name { flex: 1; }
+  .arrow { color: #444; font-size: 14px; margin-left: 8px; flex-shrink: 0; }
+  .footer { font-size: 11px; color: #333; margin-top: 12px; }
 </style>
 </head>
 <body>
+
 <div class="profile">
   <div class="avatar">AS</div>
   <h1>arifseti</h1>
   <p>Link belanja rekomendasiku 🛍️</p>
 </div>
 
-<div id="content" style="width:100%;max-width:420px;"></div>
+<div style="width:100%;max-width:420px;">
+
+  <div class="section">
+    <div class="section-title">Beli di Shopee</div>
+    <div class="platform-block">
+      <div class="platform-header">
+        <div class="platform-icon shopee-icon">🛒</div>
+        <div>
+          <div class="platform-name">Shopee</div>
+          <div class="platform-sub">Klik produk untuk belanja</div>
+        </div>
+      </div>
+      <div class="categories">
+        <a href="https://s.shopee.co.id/9UzQybecWb" target="_blank" rel="nofollow" class="cat-link">
+          <span class="cat-label"><span class="cat-emoji">🎒</span><span class="cat-name">Tas Sekolah Anak – Ransel Bobobog SD SMP SMA</span></span>
+          <span class="arrow">›</span>
+        </a>
+        <a href="https://s.shopee.co.id/qhSekR2xh" target="_blank" rel="nofollow" class="cat-link">
+          <span class="cat-label"><span class="cat-emoji">🏷️</span><span class="cat-name">Sticker Label – 30 Pcs Label Buku Custom Nama</span></span>
+          <span class="arrow">›</span>
+        </a>
+        <a href="https://s.shopee.co.id/8AU3OYifit" target="_blank" rel="nofollow" class="cat-link">
+          <span class="cat-label"><span class="cat-emoji">📚</span><span class="cat-name">Sampul Buku – 10pcs PVC Film Tahan Air</span></span>
+          <span class="arrow">›</span>
+        </a>
+        <a href="https://s.shopee.co.id/18LfapaZt" target="_blank" rel="nofollow" class="cat-link">
+          <span class="cat-label"><span class="cat-emoji">📓</span><span class="cat-name">Buku Tulis – 1 Pack 10 Buku Alfa Campus 50 Lembar</span></span>
+          <span class="arrow">›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Beli di Tokopedia</div>
+    <div class="platform-block">
+      <div class="platform-header">
+        <div class="platform-icon tokopedia-icon">🟢</div>
+        <div>
+          <div class="platform-name">Tokopedia</div>
+          <div class="platform-sub">Segera hadir</div>
+        </div>
+      </div>
+      <div class="categories">
+        <div style="font-size:13px;color:#444;padding:8px 4px;font-style:italic;">Link Tokopedia segera ditambahkan...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <div class="footer">arifseti · link belanja</div>
 
-<script>
-const STORAGE_KEY = 'arifseti_links_v1';
-
-const DEFAULT_DATA = {
-  shopee: {
-    name: "Shopee",
-    icon: "🛒",
-    color: "shopee-icon",
-    main: "",
-    categories: []
-  },
-  tokopedia: {
-    name: "Tokopedia",
-    icon: "🟢",
-    color: "tokopedia-icon",
-    main: "",
-    categories: []
-  }
-};
-
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : DEFAULT_DATA;
-  } catch(e) {
-    return DEFAULT_DATA;
-  }
-}
-
-function renderCatArrow() { return '<span class="arrow">›</span>'; }
-
-function render() {
-  const data = loadData();
-  const el = document.getElementById('content');
-  let html = '';
-
-  const platforms = [
-    { key: 'shopee', label: 'Shopee', iconClass: 'shopee-icon', emoji: '🛒' },
-    { key: 'tokopedia', label: 'Tokopedia', iconClass: 'tokopedia-icon', emoji: '🟢' }
-  ];
-
-  platforms.forEach(p => {
-    const pd = data[p.key] || { name: p.label, main: '', categories: [] };
-    const cats = pd.categories || [];
-
-    html += `<div class="section">`;
-    html += `<div class="section-title">Beli di ${p.label}</div>`;
-    html += `<div class="platform-block">`;
-    html += `<div class="platform-header">`;
-    html += `<div class="platform-icon ${p.iconClass}">${p.emoji}</div>`;
-    html += `<div><div class="platform-name">${p.label}</div><div class="platform-sub">Klik kategori untuk belanja</div></div>`;
-    html += `</div>`;
-    html += `<div class="categories">`;
-
-    if (pd.main) {
-      html += `<a href="${pd.main}" target="_blank" rel="nofollow" class="cat-link main-link">
-        <span class="cat-label"><span class="cat-emoji">🏠</span> Semua Produk</span>
-        ${renderCatArrow()}
-      </a>`;
-    }
-
-    if (cats.length > 0) {
-      cats.forEach(c => {
-        if (c.name && c.url) {
-          html += `<a href="${c.url}" target="_blank" rel="nofollow" class="cat-link">
-            <span class="cat-label"><span class="cat-emoji">${c.emoji || '🔗'}</span> ${c.name}</span>
-            ${renderCatArrow()}
-          </a>`;
-        }
-      });
-    } else if (!pd.main) {
-      html += `<div class="empty-cat">Belum ada link ditambahkan</div>`;
-    }
-
-    html += `</div></div></div>`;
-  });
-
-  el.innerHTML = html;
-}
-
-render();
-window.addEventListener('storage', render);
-</script>
 </body>
 </html>
