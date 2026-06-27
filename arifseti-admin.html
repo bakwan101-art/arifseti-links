@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – arifseti Link Manager</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+  .container { max-width: 520px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #555; margin-bottom: 28px; }
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #777;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .shopee-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff5722; }
+  .tokopedia-dot { width: 8px; height: 8px; border-radius: 50%; background: #03a84e; }
+  label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; margin-top: 12px; }
+  input[type="text"], input[type="url"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: #111;
+    border: 1px solid #2e2e2e;
+    border-radius: 9px;
+    color: #e0e0e0;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.15s;
+  }
+  input:focus { border-color: #444; }
+  .cat-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .cat-row input.emoji-in {
+    width: 52px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    padding: 8px 6px;
+  }
+  .cat-row input.name-in { flex: 1; }
+  .cat-row input.url-in { flex: 2; }
+  .cat-row button.del-btn {
+    background: none;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #555;
+    width: 32px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: background 0.1s, color 0.1s;
+  }
+  .cat-row button.del-btn:hover { background: #2a1010; color: #e44; border-color: #e44; }
+  .add-cat-btn {
+    margin-top: 10px;
+    background: none;
+    border: 1px dashed #333;
+    color: #555;
+    border-radius: 9px;
+    width: 100%;
+    padding: 9px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: border 0.1s, color 0.1s;
+  }
+  .add-cat-btn:hover { border-color: #555; color: #aaa; }
+  .cat-header {
+    display: flex;
+    gap: 8px;
+    font-size: 11px;
+    color: #444;
+    padding: 0 0 4px 0;
+  }
+  .cat-header span:nth-child(1) { width: 52px; flex-shrink: 0; text-align: center; }
+  .cat-header span:nth-child(2) { flex: 1; }
+  .cat-header span:nth-child(3) { flex: 2; }
+  .cat-header span:nth-child(4) { width: 32px; flex-shrink: 0; }
+  .save-btn {
+    width: 100%;
+    padding: 13px;
+    background: #f97316;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.15s;
+  }
+  .save-btn:hover { background: #ea6c10; }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1e1e1e;
+    border: 1px solid #333;
+    color: #bbb;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    transition: transform 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .preview-link {
+    font-size: 12px;
+    color: #444;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .preview-link a { color: #f97316; text-decoration: none; }
+  .preview-link a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid #222; margin: 8px 0; }
+  .export-section {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+  .export-title { font-size: 13px; color: #555; margin-bottom: 8px; }
+  textarea.export-box {
+    width: 100%;
+    background: #0a0a0a;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    color: #666;
+    font-size: 11px;
+    font-family: monospace;
+    padding: 10px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+  }
+  .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+  .small-btn {
+    flex: 1;
+    padding: 8px;
+    background: none;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+  }
+  .small-btn:hover { background: #1e1e1e; color: #ccc; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔧 Admin – arifseti</h1>
+  <p class="subtitle">Kelola link Shopee & Tokopedia kamu</p>
+
+  <div class="card" id="shopee-card">
+    <div class="card-title"><span class="shopee-dot"></span> Shopee</div>
+    <label>Link Utama Shopee (opsional)</label>
+    <input type="url" id="shopee_main" placeholder="https://shopee.co.id/...">
+    <hr style="margin-top:16px;">
+    <label style="margin-top:4px;">Kategori Produk</label>
+    <div class="cat-header">
+      <span>Emoji</span><span>Nama Kategori</span><span>Link URL</span><span></span>
+    </div>
+    <div id="shopee_cats"></div>
+    <button class="add-cat-btn" onclick="addCat('shopee')">+ Tambah Kategori</button>
+  </div>
+
+  <div class="card" id="tokopedia-card">
+    <div class="card-title"><span class="tokopedia-dot"></span> Tokopedia</div>
+    <label>Link Utama Tokopedia (opsional)</label>
+    <input type="url" id="tokopedia_main" placeholder="https://tokopedia.com/...">
+    <hr style="margin-top:16px;">
+    <label style="margin-top:4px;">Kategori Produk</label>
+    <div class="cat-header">
+      <span>Emoji</span><span>Nama Kategori</span><span>Link URL</span><span></span>
+    </div>
+    <div id="tokopedia_cats"></div>
+    <button class="add-cat-btn" onclick="addCat('tokopedia')">+ Tambah Kategori</button>
+  </div>
+
+  <button class="save-btn" onclick="saveAll()">💾 Simpan & Update</button>
+
+  <div class="preview-link">
+    Lihat halaman publik: <a href="arifseti.html" target="_blank">arifseti.html</a> ·
+    <a href="#" onclick="openPreview(); return false;">Preview sekarang</a>
+  </div>
+
+  <div class="export-section">
+    <div class="export-title">📤 Export / Import Data (backup)</div>
+    <textarea class="export-box" id="export_box" placeholder="Data JSON muncul di sini..."></textarea>
+    <div class="btn-row">
+      <button class="small-btn" onclick="exportData()">Export JSON</button>
+      <button class="small-btn" onclick="importData()">Import JSON</button>
+      <button class="small-btn" onclick="copyExport()">Copy</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Tersimpan!</div>
+
+<script>
+const STORAGE_KEY = 'arifseti_links_v1';
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { shopee: { main:'', categories:[] }, tokopedia: { main:'', categories:[] } };
+  } catch(e) {
+    return { shopee: { main:'', categories:[] }, tokopedia: { main:'', categories:[] } };
+  }
+}
+
+function buildCatRow(platform, cat, idx) {
+  const div = document.createElement('div');
+  div.className = 'cat-row';
+  div.innerHTML = `
+    <input type="text" class="emoji-in" value="${cat.emoji||'🔗'}" placeholder="🔗" maxlength="2" title="Emoji">
+    <input type="text" class="name-in" value="${cat.name||''}" placeholder="Nama kategori (Sepatu, Baju, dll)">
+    <input type="url" class="url-in" value="${cat.url||''}" placeholder="https://...">
+    <button class="del-btn" onclick="delCat('${platform}', ${idx})" title="Hapus">✕</button>
+  `;
+  return div;
+}
+
+function renderCats(platform, cats) {
+  const el = document.getElementById(platform + '_cats');
+  el.innerHTML = '';
+  (cats || []).forEach((cat, i) => el.appendChild(buildCatRow(platform, cat, i)));
+}
+
+function collectCats(platform) {
+  const rows = document.querySelectorAll(`#${platform}_cats .cat-row`);
+  const cats = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const emoji = inputs[0].value.trim() || '🔗';
+    const name = inputs[1].value.trim();
+    const url = inputs[2].value.trim();
+    if (name || url) cats.push({ emoji, name, url });
+  });
+  return cats;
+}
+
+function addCat(platform) {
+  const el = document.getElementById(platform + '_cats');
+  const idx = el.children.length;
+  el.appendChild(buildCatRow(platform, {}, idx));
+}
+
+function delCat(platform, idx) {
+  const rows = document.querySelectorAll(`#${platform}_cats .cat-row`);
+  if (rows[idx]) rows[idx].remove();
+}
+
+function saveAll() {
+  const data = {
+    shopee: {
+      main: document.getElementById('shopee_main').value.trim(),
+      categories: collectCats('shopee')
+    },
+    tokopedia: {
+      main: document.getElementById('tokopedia_main').value.trim(),
+      categories: collectCats('tokopedia')
+    }
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  showToast('✅ Tersimpan! Halaman arifseti.html otomatis update.');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function exportData() {
+  const raw = localStorage.getItem(STORAGE_KEY) || '{}';
+  document.getElementById('export_box').value = JSON.stringify(JSON.parse(raw), null, 2);
+}
+
+function importData() {
+  try {
+    const val = document.getElementById('export_box').value.trim();
+    const parsed = JSON.parse(val);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    init();
+    showToast('✅ Data berhasil diimport!');
+  } catch(e) {
+    showToast('❌ Format JSON tidak valid!');
+  }
+}
+
+function copyExport() {
+  exportData();
+  const box = document.getElementById('export_box');
+  box.select();
+  document.execCommand('copy');
+  showToast('📋 Disalin ke clipboard!');
+}
+
+function openPreview() {
+  window.open('arifseti.html', '_blank');
+}
+
+function init() {
+  const data = loadData();
+  document.getElementById('shopee_main').value = data.shopee?.main || '';
+  document.getElementById('tokopedia_main').value = data.tokopedia?.main || '';
+  renderCats('shopee', data.shopee?.categories || []);
+  renderCats('tokopedia', data.tokopedia?.categories || []);
+}
+
+init();
+</script>
+</body>
+</html>
